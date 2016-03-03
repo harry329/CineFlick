@@ -14,7 +14,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.cineflick.developer.harry.parser.JSONParser;
 import com.cineflick.developer.harry.utils.AppConstants;
+
+import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 InputStream inputStream =urlConnection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
                 if(inputStream == null){
-                    Log.e(TAG,"Input stream is null");
+                    Log.e(TAG,getResources().getString(R.string.input_stream_null));
                     return null;
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -111,11 +114,15 @@ public class MainActivity extends AppCompatActivity {
                     return null;
                 }
                 movieJsonStr = buffer.toString();
+                JSONParser jsonParser = new JSONParser(movieJsonStr);
+
+                System.out.println("Length of ArrayList is " + jsonParser.parseJSON());
                 Log.d(TAG,movieJsonStr);
             } catch (IOException e) {
-                Log.e("PlaceholderFragment", "Error ", e);
-                // If the code didn't successfully get the weather data, there's no point in attemping
-                // to parse it.
+                Log.e(TAG, getResources().getString(R.string.error), e);
+                return null;
+            } catch(JSONException e){
+                Log.e(TAG, getResources().getString(R.string.error), e);
                 return null;
             } finally{
                 if (urlConnection != null) {
@@ -125,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         reader.close();
                     } catch (final IOException e) {
-                        Log.e("PlaceholderFragment", "Error closing stream", e);
+                        Log.e(TAG, getResources().getString(R.string.error_closing_stream), e);
                     }
                 }
             }

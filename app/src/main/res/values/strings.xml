@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">CineFlick</string>
     <string name="action_settings">Settings</string>
+    <string name="ratings_settings">Ratings</string>
     <string name="network_not_availbale">Network is not available</string>
     <string name="network_availbale">Network is available</string>
+    <string name="error">Error</string>
+    <string name="error_closing_stream">Error closing stream</string>
+    <string name="input_stream_null">Input stream is null</string>
 </resources>
