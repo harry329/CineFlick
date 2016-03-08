@@ -1,9 +1,12 @@
 package com.cineflick.developer.harry.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by harry on 3/2/16.
  */
-public class MovieDataModel {
+public class MovieDataModel implements Parcelable{
     public boolean isAdult() {
         return mAdult;
     }
@@ -104,6 +107,45 @@ public class MovieDataModel {
     private boolean mVideo;
     private double mVoteAverage;
 
+    public MovieDataModel(Parcel input){
+        mPosterPath=input.readString();
+        mOverview=input.readString();
+        mReleaseDate=input.readString();
+        mOriginalTitle=input.readString();
+        mOriginalLanguage=input.readString();
+        mTitle=input.readString();
+        mPopularity=input.readDouble();
+        mVoteCount=input.readInt();
+        mVoteAverage=input.readDouble();
 
+    }
 
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out,int flags){
+        out.writeString(mPosterPath);
+        out.writeString(mOverview);
+        out.writeString(mReleaseDate);
+        out.writeString(mOriginalTitle);
+        out.writeString(mOriginalLanguage);
+        out.writeString(mTitle);
+        out.writeDouble(mPopularity);
+        out.writeInt(mVoteCount);
+        out.writeDouble(mVoteAverage);
+    }
+
+        public static final Parcelable.Creator<MovieDataModel> CREATOR
+                = new Parcelable.Creator<MovieDataModel>() {
+
+        public MovieDataModel createFromParcel(Parcel in){
+            return new MovieDataModel(in);
+        }
+
+        public MovieDataModel[] newArray(int size) {
+            return new MovieDataModel[size];
+        }
+
+    };
 }

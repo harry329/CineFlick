@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if(isNetworkAvailable()){
             //Start background Thread
-            new MovieQuerryClass().execute();
+            new MovieQuerryClass().execute(getResources().getString(R.string.popularity));
 
 
         }
@@ -85,10 +85,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class MovieQuerryClass extends AsyncTask<Void, Void, Void> {
+    private class MovieQuerryClass extends AsyncTask<String, Void, Void> {
 
-        protected Void doInBackground(Void... params) {
-            String urlWithAppKey = AppConstants.URL+AppConstants.POPULARITY_DESC+AppConstants.API_KEY;
+        protected Void doInBackground(String... params) {
+            String selectionParam =AppConstants.POPULARITY_DESC;
+            if(params[0].equals(getResources().getString(R.string.rating))){
+                selectionParam = AppConstants.RATING_DESC;
+            }
+            String urlWithAppKey = AppConstants.URL+selectionParam+AppConstants.API_KEY;
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             String movieJsonStr = null;
@@ -117,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONParser jsonParser = new JSONParser(movieJsonStr);
 
                 System.out.println("Length of ArrayList is " + jsonParser.parseJSON());
-                Log.d(TAG,movieJsonStr);
+                Log.v(TAG,movieJsonStr);
             } catch (IOException e) {
                 Log.e(TAG, getResources().getString(R.string.error), e);
                 return null;

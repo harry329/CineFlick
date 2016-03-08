@@ -7,4 +7,6 @@
     <string name="error">Error</string>
     <string name="error_closing_stream">Error closing stream</string>
     <string name="input_stream_null">Input stream is null</string>
+    <string name="popularity">Popularity</string>
+    <string name="rating">Rating</string>
 </resources>
