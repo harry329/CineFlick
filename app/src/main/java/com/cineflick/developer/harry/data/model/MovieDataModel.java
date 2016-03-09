@@ -95,6 +95,10 @@ public class MovieDataModel implements Parcelable{
         mVoteCount = voteCount;
     }
 
+    public MovieDataModel(){
+        super();
+    }
+
     private String mPosterPath;
     private boolean mAdult;
     private String mOverview;
