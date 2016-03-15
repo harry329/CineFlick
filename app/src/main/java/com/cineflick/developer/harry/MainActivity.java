@@ -40,22 +40,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         if(isNetworkAvailable()){
             //Start background Thread
             new MovieQuerryClass().execute(getResources().getString(R.string.popularity));
 
         }
-        mGridView = (GridView)findViewById(R.id.gridView);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mGridView = (GridView)findViewById(R.id.gridview);
     }
 
     private boolean isNetworkAvailable(){
@@ -95,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     public void displayMovies(){
         if(mArrayList != null) {
             Log.d(TAG,"array list is not null");
+            Log.d(TAG,"array list is not null and its size is " +mArrayList.size());
             MovieAdapter movieAdapter = new MovieAdapter(this, mArrayList);
             mGridView.setAdapter(movieAdapter);
         }else{
@@ -103,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class MovieQuerryClass extends AsyncTask<String, Void, ArrayList<MovieDataModel>> {
+    private class MovieQuerryClass extends AsyncTask<String, Void, Void> {
 
-        protected ArrayList<MovieDataModel> doInBackground(String... params) {
+        protected Void doInBackground(String... params) {
             String selectionParam =AppConstants.POPULARITY_DESC;
             if(params[0].equals(getResources().getString(R.string.rating))){
                 selectionParam = AppConstants.RATING_DESC;
@@ -159,15 +150,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-            return mArrayList;
+            return null;
         }
 
-        protected void onPostExecute(ArrayList<MovieDataModel> result){
+        protected void onPostExecute(Void result){
             Log.d(TAG, "In post execute");
-            if(result!=null) {
                 displayMovies();
-            }
-
         }
     }
 }
