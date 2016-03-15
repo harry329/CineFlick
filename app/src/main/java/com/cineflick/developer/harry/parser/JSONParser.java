@@ -15,7 +15,7 @@ import java.util.List;
 public class JSONParser {
     private String mJSONString;
     private JSONObject mJSONObject;
-    private List<MovieDataModel> mListMovies;
+    private ArrayList<MovieDataModel> mListMovies;
 
 
     public JSONParser(String JSONString){
@@ -23,7 +23,7 @@ public class JSONParser {
         mListMovies = new ArrayList<>();
     }
 
-    public int parseJSON() throws JSONException{
+    public ArrayList<MovieDataModel> parseJSON() throws JSONException{
         mJSONObject = new JSONObject(mJSONString);
         JSONArray jsonArray = mJSONObject.getJSONArray("results");
         for(int i=0;i <jsonArray.length();i++){
@@ -42,7 +42,7 @@ public class JSONParser {
             movieDataModel.setVoteAverage(jsonObject.getDouble("vote_average"));
             mListMovies.add(movieDataModel);
         }
-        return mListMovies.size();
+        return mListMovies;
     }
 
 

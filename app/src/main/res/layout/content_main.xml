@@ -12,8 +12,10 @@
     tools:context="com.cineflick.developer.harry.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
+    <GridView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:id="@+id/gridView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>

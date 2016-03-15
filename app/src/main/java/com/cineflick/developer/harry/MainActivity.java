@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridView;
 
+import com.cineflick.developer.harry.adapter.MovieAdapter;
+import com.cineflick.developer.harry.data.model.MovieDataModel;
 import com.cineflick.developer.harry.parser.JSONParser;
 import com.cineflick.developer.harry.utils.AppConstants;
 
@@ -25,8 +28,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
+    private ArrayList<MovieDataModel> mArrayList;
+    private GridView mGridView;
     private static final String TAG =MainActivity.class.getSimpleName();
 
     @Override
@@ -39,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
             //Start background Thread
             new MovieQuerryClass().execute(getResources().getString(R.string.popularity));
 
-
         }
+        mGridView = (GridView)findViewById(R.id.gridView);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,9 +92,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class MovieQuerryClass extends AsyncTask<String, Void, Void> {
+    public void displayMovies(){
+        if(mArrayList != null) {
+            Log.d(TAG,"array list is not null");
+            MovieAdapter movieAdapter = new MovieAdapter(this, mArrayList);
+            mGridView.setAdapter(movieAdapter);
+        }else{
+            Log.d(TAG,"array list is null");
+        }
 
-        protected Void doInBackground(String... params) {
+    }
+
+    private class MovieQuerryClass extends AsyncTask<String, Void, ArrayList<MovieDataModel>> {
+
+        protected ArrayList<MovieDataModel> doInBackground(String... params) {
             String selectionParam =AppConstants.POPULARITY_DESC;
             if(params[0].equals(getResources().getString(R.string.rating))){
                 selectionParam = AppConstants.RATING_DESC;
@@ -96,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             String movieJsonStr = null;
+            JSONParser jsonParser =null;
             try{
                 URL url = new URL(urlWithAppKey);
                 urlConnection =(HttpURLConnection) url.openConnection();
@@ -118,10 +137,10 @@ public class MainActivity extends AppCompatActivity {
                     return null;
                 }
                 movieJsonStr = buffer.toString();
-                JSONParser jsonParser = new JSONParser(movieJsonStr);
+                jsonParser = new JSONParser(movieJsonStr);
 
-                System.out.println("Length of ArrayList is " + jsonParser.parseJSON());
-                Log.v(TAG,movieJsonStr);
+                Log.d(TAG, movieJsonStr);
+                mArrayList = jsonParser.parseJSON();
             } catch (IOException e) {
                 Log.e(TAG, getResources().getString(R.string.error), e);
                 return null;
@@ -140,8 +159,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-            return null;
+            return mArrayList;
         }
 
+        protected void onPostExecute(ArrayList<MovieDataModel> result){
+            Log.d(TAG, "In post execute");
+            if(result!=null) {
+                displayMovies();
+            }
+
+        }
     }
 }
