@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.cineflick.developer.harry.R;
 import com.cineflick.developer.harry.data.model.MovieDataModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,8 @@ import java.util.ArrayList;
  */
 public class MovieAdapter extends BaseAdapter {
     private String TAG = MovieAdapter.class.getSimpleName();
+    private final String mBaseUrl="http://image.tmdb.org/t/p/";
+    private final String mSize = "w185/";
     private Context mContext;
     private ArrayList mArrayList;
 
@@ -52,16 +55,20 @@ public class MovieAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.movie_adapter,null);
             viewHolder = new ViewHolder();
-            viewHolder.mTextView = (TextView)convertView.findViewById(R.id.textView);
+            viewHolder.mImageView = (ImageView)convertView.findViewById(R.id.movie_adapter_imageView);
+            viewHolder.mTextView = (TextView)convertView.findViewById(R.id.movie_adapter_textView);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
-        viewHolder.mTextView.setText(((MovieDataModel)mArrayList.get(position)).getOriginalTitle());
+        MovieDataModel movieDataModel = (MovieDataModel)mArrayList.get(position);
+        Picasso.with(mContext).load(mBaseUrl+mSize+movieDataModel.getPosterPath()).into(viewHolder.mImageView);
+        viewHolder.mTextView.setText(movieDataModel.getOriginalTitle());
         return convertView;
     }
 
     private static class ViewHolder{
+        ImageView mImageView;
         TextView mTextView;
     }
 }
