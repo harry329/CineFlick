@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.cineflick.developer.harry.R;
 import com.cineflick.developer.harry.data.model.MovieDataModel;
+import com.cineflick.developer.harry.utils.AppConstants;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class MovieAdapter extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
         MovieDataModel movieDataModel = (MovieDataModel)mArrayList.get(position);
-        Picasso.with(mContext).load(mBaseUrl+mSize+movieDataModel.getPosterPath()).into(viewHolder.mImageView);
+        Picasso.with(mContext).load(AppConstants.BASE_URL +AppConstants.IMAGE_SIZE +movieDataModel.getPosterPath()).into(viewHolder.mImageView);
         viewHolder.mTextView.setText(movieDataModel.getOriginalTitle());
         return convertView;
     }

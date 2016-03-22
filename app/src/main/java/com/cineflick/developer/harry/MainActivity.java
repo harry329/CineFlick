@@ -1,6 +1,7 @@
 package com.cineflick.developer.harry;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -13,7 +14,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.cineflick.developer.harry.adapter.MovieAdapter;
 import com.cineflick.developer.harry.data.model.MovieDataModel;
@@ -85,9 +88,26 @@ public class MainActivity extends AppCompatActivity {
     public void displayMovies(){
         if(mArrayList != null) {
             Log.d(TAG,"array list is not null");
-            Log.d(TAG,"array list is not null and its size is " +mArrayList.size());
-            MovieAdapter movieAdapter = new MovieAdapter(this, mArrayList);
+            Log.d(TAG, "array list is not null and its size is " + mArrayList.size());
+            final MovieAdapter movieAdapter = new MovieAdapter(this, mArrayList);
             mGridView.setAdapter(movieAdapter);
+            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                MovieDataModel movieDataModel;
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    movieDataModel = mArrayList.get(position);
+                    Intent intent = new Intent(getApplicationContext(),DetailedMovieInfo.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(AppConstants.KEY_MOVIE_NAME,movieDataModel.getOriginalTitle());
+                    bundle.putString(AppConstants.KEY_MOVIE_DESC,movieDataModel.getOverview());
+                    bundle.putString(AppConstants.KEY_MOVIE_POSTER,movieDataModel.getPosterPath());
+                    bundle.putString(AppConstants.KEY_AVERAGE_RATINGS, ((Double) movieDataModel.getPopularity()).toString());
+                    bundle.putString(AppConstants.KEY_RELEASE_DATE,movieDataModel.getReleaseDate());
+                    intent.putExtra(AppConstants.EXTRA_MOVIE_INFO,bundle);
+                    startActivity(intent);
+                }
+            });
         }else{
             Log.d(TAG,"array list is null");
         }
