@@ -8,10 +8,16 @@ public class AppConstants {
     //url for movie db and api key
     public static final String URL= "https://api.themoviedb.org/3/discover/movie?sort_by=";
     public static final String POPULARITY_DESC="popularity.desc&api_key=";
-    public static final String RATING_DESC="vote_average.gte=3.5&api_key";
+    public static final String RATING_DESC="vote_average.gte=3.5&api_key=";
+    public static final String POPULARITY="Popularity";
+    public static final String RATING="Rating";
+    public static final String PREF_KEY="shareKey";
+
+    //Add your key
     public static final String API_KEY="";
     public static final String BASE_URL ="http://image.tmdb.org/t/p/";
-    public static final String IMAGE_SIZE = "w185/";
+    public static final String IMAGE_SIZE_DEFAUlT = "w185/";
+    public static final String IMAGE_SIZE_342="w342/";
     public static final String KEY_MOVIE_NAME="movieName";
     public static final String KEY_MOVIE_DESC="movieDesc";
     public static final String KEY_MOVIE_POSTER="moviePoster";

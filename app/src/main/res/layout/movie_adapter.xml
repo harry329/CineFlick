@@ -12,11 +12,12 @@
         android:id="@+id/movie_adapter_imageView"
         android:src="@mipmap/ic_launcher"
         android:layout_gravity="center_horizontal"/>
-
+<!--
+    //TextView to show titles of movies
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/movie_adapter_textView"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"/>-->
 </LinearLayout>

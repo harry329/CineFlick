@@ -2,6 +2,7 @@ package com.cineflick.developer.harry;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -37,6 +38,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private ArrayList<MovieDataModel> mArrayList;
     private GridView mGridView;
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
     private static final String TAG =MainActivity.class.getSimpleName();
 
     @Override
@@ -45,7 +48,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         if(isNetworkAvailable()){
             //Start background Thread
-            new MovieQuerryClass().execute(getResources().getString(R.string.popularity));
+            mSharedPreferences= this.getPreferences(Context.MODE_PRIVATE);
+            mEditor = mSharedPreferences.edit();
+            mEditor.putString(AppConstants.PREF_KEY,AppConstants.POPULARITY);
+            mEditor.commit();
+            new MovieQuerryClass().execute(AppConstants.POPULARITY);
 
         }
         mGridView = (GridView)findViewById(R.id.gridview);
@@ -78,8 +85,21 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.toogle_rating_popularity) {
+            String ratingOrPopularity =mSharedPreferences.getString(AppConstants.PREF_KEY,AppConstants.POPULARITY);
+            if(ratingOrPopularity.equals(AppConstants.POPULARITY)) {
+                new MovieQuerryClass().execute(AppConstants.RATING);
+                mEditor.putString(AppConstants.PREF_KEY, AppConstants.RATING);
+                mEditor.commit();
+                Log.d(TAG,"I was in rating");
+                return true;
+            }else {
+                new MovieQuerryClass().execute(AppConstants.POPULARITY);
+                mEditor.putString(AppConstants.PREF_KEY, AppConstants.POPULARITY);
+                Log.d(TAG,"I was in popularity");
+                mEditor.commit();
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -87,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void displayMovies(){
         if(mArrayList != null) {
-            Log.d(TAG,"array list is not null");
-            Log.d(TAG, "array list is not null and its size is " + mArrayList.size());
+            Log.d(TAG,getString(R.string.array_list_not_null));
+            Log.d(TAG, getString(R.string.array_list_not_null_size) + mArrayList.size());
             final MovieAdapter movieAdapter = new MovieAdapter(this, mArrayList);
             mGridView.setAdapter(movieAdapter);
             mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,14 +122,14 @@ public class MainActivity extends AppCompatActivity {
                     bundle.putString(AppConstants.KEY_MOVIE_NAME,movieDataModel.getOriginalTitle());
                     bundle.putString(AppConstants.KEY_MOVIE_DESC,movieDataModel.getOverview());
                     bundle.putString(AppConstants.KEY_MOVIE_POSTER,movieDataModel.getPosterPath());
-                    bundle.putString(AppConstants.KEY_AVERAGE_RATINGS, ((Double) movieDataModel.getPopularity()).toString());
+                    bundle.putString(AppConstants.KEY_AVERAGE_RATINGS, ((Double) movieDataModel.getVoteAverage()).toString());
                     bundle.putString(AppConstants.KEY_RELEASE_DATE,movieDataModel.getReleaseDate());
                     intent.putExtra(AppConstants.EXTRA_MOVIE_INFO,bundle);
                     startActivity(intent);
                 }
             });
         }else{
-            Log.d(TAG,"array list is null");
+            Log.d(TAG,getString(R.string.array_list_null));
         }
 
     }
@@ -118,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected Void doInBackground(String... params) {
             String selectionParam =AppConstants.POPULARITY_DESC;
-            if(params[0].equals(getResources().getString(R.string.rating))){
+            if(params[0].equals(AppConstants.RATING)){
                 selectionParam = AppConstants.RATING_DESC;
             }
             String urlWithAppKey = AppConstants.URL+selectionParam+AppConstants.API_KEY;
@@ -174,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(Void result){
-            Log.d(TAG, "In post execute");
+            Log.d(TAG, getResources().getString(R.string.in_post_execute));
                 displayMovies();
         }
     }

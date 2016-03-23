@@ -24,13 +24,14 @@ public class DetailedMovieInfo extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle intentBundle = intent.getBundleExtra(AppConstants.EXTRA_MOVIE_INFO);
         if (intentBundle != null) {
-            Log.d(TAG, "intent bundle is not null in activity");
+            Log.d(TAG, getString(R.string.bundle_not_null_detail_activity));
+            DetailedMovieInfoFragment detailedMovieInfoFragment = new DetailedMovieInfoFragment();
+            detailedMovieInfoFragment.setArguments(intentBundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, detailedMovieInfoFragment).commit();
         } else {
-            Log.d(TAG, "intent bundle is null in activity");
+            Log.d(TAG, getString(R.string.bundle_null_detail_activity));
         }
-        DetailedMovieInfoFragment detailedMovieInfoFragment = new DetailedMovieInfoFragment();
-        detailedMovieInfoFragment.setArguments(intentBundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment, detailedMovieInfoFragment).commit();
+
 
     }
 }
