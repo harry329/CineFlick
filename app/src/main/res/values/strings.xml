@@ -25,4 +25,6 @@
     <string name="ratings">Ratings</string>
     <string name="release">Release</string>
     <string name="movie">Movie</string>
+    <string name="was_in_popularity">I was in popularity</string>
+    <string name="was_in_rating">I was in rating</string>
 </resources>

@@ -7,5 +7,5 @@
         android:id="@+id/toogle_rating_popularity"
         android:orderInCategory="100"
         android:title="@string/toggle_rating"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 </menu>

@@ -46,14 +46,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        mSharedPreferences= this.getPreferences(Context.MODE_PRIVATE);
+        mEditor = mSharedPreferences.edit();
         if(isNetworkAvailable()){
             //Start background Thread
-            mSharedPreferences= this.getPreferences(Context.MODE_PRIVATE);
-            mEditor = mSharedPreferences.edit();
             mEditor.putString(AppConstants.PREF_KEY,AppConstants.POPULARITY);
             mEditor.commit();
             new MovieQuerryClass().execute(AppConstants.POPULARITY);
-
         }
         mGridView = (GridView)findViewById(R.id.gridview);
     }
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG,getResources().getString(R.string.network_availbale));
             return true;
         }else{
+            Toast.makeText(this,getString(R.string.network_not_availbale),Toast.LENGTH_LONG).show();
             Log.d(TAG,getResources().getString(R.string.network_not_availbale));
             return false;
         }
@@ -87,18 +89,21 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.toogle_rating_popularity) {
             String ratingOrPopularity =mSharedPreferences.getString(AppConstants.PREF_KEY,AppConstants.POPULARITY);
-            if(ratingOrPopularity.equals(AppConstants.POPULARITY)) {
-                new MovieQuerryClass().execute(AppConstants.RATING);
-                mEditor.putString(AppConstants.PREF_KEY, AppConstants.RATING);
-                mEditor.commit();
-                Log.d(TAG,"I was in rating");
-                return true;
-            }else {
-                new MovieQuerryClass().execute(AppConstants.POPULARITY);
-                mEditor.putString(AppConstants.PREF_KEY, AppConstants.POPULARITY);
-                Log.d(TAG,"I was in popularity");
-                mEditor.commit();
-                return true;
+            //check network connectivity
+            if(isNetworkAvailable()) {
+                if (ratingOrPopularity.equals(AppConstants.POPULARITY)) {
+                    new MovieQuerryClass().execute(AppConstants.RATING);
+                    mEditor.putString(AppConstants.PREF_KEY, AppConstants.RATING);
+                    mEditor.commit();
+                    Log.d(TAG, getString(R.string.was_in_rating));
+                    return true;
+                } else {
+                    new MovieQuerryClass().execute(AppConstants.POPULARITY);
+                    mEditor.putString(AppConstants.PREF_KEY, AppConstants.POPULARITY);
+                    Log.d(TAG, getString(R.string.was_in_popularity));
+                    mEditor.commit();
+                    return true;
+                }
             }
         }
 
