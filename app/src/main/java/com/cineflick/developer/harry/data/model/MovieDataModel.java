@@ -7,11 +7,11 @@ import android.os.Parcelable;
  * Created by harry on 3/2/16.
  */
 public class MovieDataModel implements Parcelable{
-    public boolean isAdult() {
+    public String getAdult() {
         return mAdult;
     }
 
-    public void setAdult(boolean adult) {
+    public void setAdult(String adult) {
         mAdult = adult;
     }
 
@@ -71,11 +71,11 @@ public class MovieDataModel implements Parcelable{
         mTitle = title;
     }
 
-    public boolean isVideo() {
+    public String getVideo() {
         return mVideo;
     }
 
-    public void setVideo(boolean video) {
+    public void setVideo(String video) {
         mVideo = video;
     }
 
@@ -99,20 +99,22 @@ public class MovieDataModel implements Parcelable{
         super();
     }
 
-    private String mPosterPath;
-    private boolean mAdult;
-    private String mOverview;
-    private String mReleaseDate;
-    private String mOriginalTitle;
-    private String mOriginalLanguage;
-    private String mTitle;
-    private double mPopularity;
-    private  int mVoteCount;
-    private boolean mVideo;
-    private double mVoteAverage;
+        private String mPosterPath;
+        private String mAdult;
+        private String mOverview;
+        private String mReleaseDate;
+        private String mOriginalTitle;
+        private String mOriginalLanguage;
+        private String mTitle;
+        private double mPopularity;
+        private  int mVoteCount;
+        private String mVideo;
+        private double mVoteAverage;
 
     public MovieDataModel(Parcel input){
         mPosterPath=input.readString();
+        mAdult=input.readString();
+        mVideo=input.readString();
         mOverview=input.readString();
         mReleaseDate=input.readString();
         mOriginalTitle=input.readString();
@@ -130,6 +132,8 @@ public class MovieDataModel implements Parcelable{
 
     public void writeToParcel(Parcel out,int flags){
         out.writeString(mPosterPath);
+        out.writeString(mAdult);
+        out.writeString(mVideo);
         out.writeString(mOverview);
         out.writeString(mReleaseDate);
         out.writeString(mOriginalTitle);

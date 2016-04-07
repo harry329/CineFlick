@@ -30,7 +30,7 @@ public class JSONParser {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             MovieDataModel movieDataModel = new MovieDataModel();
             movieDataModel.setPosterPath(jsonObject.getString("poster_path"));
-            movieDataModel.setAdult(jsonObject.getBoolean("adult"));
+            movieDataModel.setAdult(((Boolean)jsonObject.getBoolean("adult")).toString());
             movieDataModel.setOverview(jsonObject.getString("overview"));
             movieDataModel.setReleaseDate(jsonObject.getString("release_date"));
             movieDataModel.setOriginalTitle(jsonObject.getString("original_title"));
@@ -38,7 +38,7 @@ public class JSONParser {
             movieDataModel.setTitle(jsonObject.getString("title"));
             movieDataModel.setPopularity(jsonObject.getDouble("popularity"));
             movieDataModel.setVoteCount(jsonObject.getInt("vote_count"));
-            movieDataModel.setVideo(jsonObject.getBoolean("video"));
+            movieDataModel.setVideo(((Boolean)jsonObject.getBoolean("video")).toString());
             movieDataModel.setVoteAverage(jsonObject.getDouble("vote_average"));
             mListMovies.add(movieDataModel);
         }

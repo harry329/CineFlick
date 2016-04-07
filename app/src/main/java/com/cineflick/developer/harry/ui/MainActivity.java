@@ -1,4 +1,4 @@
-package com.cineflick.developer.harry;
+package com.cineflick.developer.harry.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,8 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,9 +18,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.cineflick.developer.harry.R;
 import com.cineflick.developer.harry.adapter.MovieAdapter;
 import com.cineflick.developer.harry.data.model.MovieDataModel;
+import com.cineflick.developer.harry.database.MovieDataBaseHelper;
 import com.cineflick.developer.harry.parser.JSONParser;
+import com.cineflick.developer.harry.settings.SettingsActivity;
 import com.cineflick.developer.harry.utils.AppConstants;
 
 import org.json.JSONException;
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private GridView mGridView;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
+    private MovieDataBaseHelper mMovieDataBaseHelper;
+    private Context mContext;
     private static final String TAG =MainActivity.class.getSimpleName();
 
     @Override
@@ -48,15 +52,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mSharedPreferences= this.getPreferences(Context.MODE_PRIVATE);
-        mEditor = mSharedPreferences.edit();
-        if(isNetworkAvailable()){
-            //Start background Thread
-            mEditor.putString(AppConstants.PREF_KEY,AppConstants.POPULARITY);
-            mEditor.commit();
-            new MovieQuerryClass().execute(AppConstants.POPULARITY);
-        }
         mGridView = (GridView)findViewById(R.id.gridview);
+        mContext = this;
+
     }
 
     private boolean isNetworkAvailable(){
@@ -87,27 +85,26 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.toogle_rating_popularity) {
-            String ratingOrPopularity =mSharedPreferences.getString(AppConstants.PREF_KEY,AppConstants.POPULARITY);
-            //check network connectivity
-            if(isNetworkAvailable()) {
-                if (ratingOrPopularity.equals(AppConstants.POPULARITY)) {
-                    new MovieQuerryClass().execute(AppConstants.RATING);
-                    mEditor.putString(AppConstants.PREF_KEY, AppConstants.RATING);
-                    mEditor.commit();
-                    Log.d(TAG, getString(R.string.was_in_rating));
-                    return true;
-                } else {
-                    new MovieQuerryClass().execute(AppConstants.POPULARITY);
-                    mEditor.putString(AppConstants.PREF_KEY, AppConstants.POPULARITY);
-                    Log.d(TAG, getString(R.string.was_in_popularity));
-                    mEditor.commit();
-                    return true;
-                }
+        if (id == R.id.action_settings) {
+            Intent  settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        if(isNetworkAvailable()){
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean syncConnPref = sharedPref.getBoolean(getString(R.string.pref_sync), false);
+            if(syncConnPref) {
+                new MovieQuerryClass().execute(AppConstants.RATING);
+            }else{
+                new MovieQuerryClass().execute(AppConstants.POPULARITY);
             }
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void displayMovies(){
@@ -142,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
     private class MovieQuerryClass extends AsyncTask<String, Void, Void> {
 
         protected Void doInBackground(String... params) {
+            mMovieDataBaseHelper = new MovieDataBaseHelper(mContext);
             String selectionParam =AppConstants.POPULARITY_DESC;
             if(params[0].equals(AppConstants.RATING)){
                 selectionParam = AppConstants.RATING_DESC;
@@ -177,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d(TAG, movieJsonStr);
                 mArrayList = jsonParser.parseJSON();
+                mMovieDataBaseHelper.insertMovies(mArrayList);
             } catch (IOException e) {
                 Log.e(TAG, getResources().getString(R.string.error), e);
                 return null;

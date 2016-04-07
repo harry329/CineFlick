@@ -1,11 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.cineflick.developer.harry.MainActivity">
+    tools:context=".ui.MainActivity">
 
     <item
-        android:id="@+id/toogle_rating_popularity"
+        android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="@string/toggle_rating"
-        app:showAsAction="always" />
+        android:title="@string/settings"
+        app:showAsAction="never" />
+
 </menu>
