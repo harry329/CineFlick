@@ -14,7 +14,7 @@ public class MovieDataBase extends SQLiteOpenHelper {
 
     private static final String MOVIE_SQL_CREATE_TABLE="CREATE TABLE "+
             MovieEntryContract.MovieEntry.TABLE_NAME + " ("+
-            MovieEntryContract.MovieEntry._ID +" INTEGER PRIMARY KEY, "+
+            MovieEntryContract.MovieEntry._ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "+
             MovieEntryContract.MovieEntry.TITLE+ MovieEntryContract.TEXT_TYPE + MovieEntryContract.COMMA_SEP+
             MovieEntryContract.MovieEntry.ORIGINAL_LANGUAGE+ MovieEntryContract.TEXT_TYPE + MovieEntryContract.COMMA_SEP+
             MovieEntryContract.MovieEntry.ORIGINAL_TITLE+ MovieEntryContract.TEXT_TYPE + MovieEntryContract.COMMA_SEP+
@@ -25,7 +25,8 @@ public class MovieDataBase extends SQLiteOpenHelper {
             MovieEntryContract.MovieEntry.VIDEO+ MovieEntryContract.TEXT_TYPE + MovieEntryContract.COMMA_SEP+
             MovieEntryContract.MovieEntry.VOTE_AVERAGE+ MovieEntryContract.REAL_TYPE + MovieEntryContract.COMMA_SEP+
             MovieEntryContract.MovieEntry.VOTE_COUNT+ MovieEntryContract.INT_TYPE + MovieEntryContract.COMMA_SEP+
-            MovieEntryContract.MovieEntry.POPULARITY+ MovieEntryContract.REAL_TYPE +
+            MovieEntryContract.MovieEntry.POPULARITY+ MovieEntryContract.REAL_TYPE + MovieEntryContract.COMMA_SEP+
+            MovieEntryContract.MovieEntry.FAVORITE+
             " )";
 
     private static final String SQL_DELETE_ENTRIES="DROP TABLE IF EXISTS "+MovieEntryContract.MovieEntry.TABLE_NAME;

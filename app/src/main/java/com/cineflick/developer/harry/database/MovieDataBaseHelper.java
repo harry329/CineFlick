@@ -74,6 +74,7 @@ public class MovieDataBaseHelper {
             count++;
             c.moveToNext();
         }
+        c.close();
         
         return mMovieList;
     }
