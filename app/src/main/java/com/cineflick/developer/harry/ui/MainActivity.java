@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 new MovieQuerryClass().execute(AppConstants.POPULARITY);
             }
+        } else {
+            new MovieQuerryClass().execute(AppConstants.FAVORITE);
         }
     }
 
@@ -143,6 +145,9 @@ public class MainActivity extends AppCompatActivity {
             String selectionParam =AppConstants.POPULARITY_DESC;
             if(params[0].equals(AppConstants.RATING)){
                 selectionParam = AppConstants.RATING_DESC;
+            } else if (params[0].equals(AppConstants.FAVORITE)){
+                mArrayList = mMovieDataBaseHelper.getMovieList(AppConstants.YES);
+                return null;
             }
             String urlWithAppKey = AppConstants.URL+selectionParam+AppConstants.API_KEY;
             HttpURLConnection urlConnection = null;

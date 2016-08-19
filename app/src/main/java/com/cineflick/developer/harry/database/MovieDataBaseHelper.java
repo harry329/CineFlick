@@ -3,32 +3,31 @@ package com.cineflick.developer.harry.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.cineflick.developer.harry.data.model.MovieDataModel;
+import com.cineflick.developer.harry.utils.AppConstants;
 
 import java.util.ArrayList;
-import java.util.Currency;
 
 /**
  * Created by harry on 4/5/16.
  */
 public class MovieDataBaseHelper {
     Context mContext;
-    MovieDataBase mMovieDataBase;
-    SQLiteDatabase mMovieSQLiteDatabase;
     ArrayList<MovieDataModel> mMovieList;
+    private static final String TAG = MovieDataBaseHelper.class.getSimpleName();
+
 
     public MovieDataBaseHelper(Context context){
         mContext = context;
-        mMovieDataBase = new MovieDataBase(mContext);
-        mMovieSQLiteDatabase = mMovieDataBase.getWritableDatabase();
         mMovieList = new ArrayList<>();
     }
 
     public void insertMovies(ArrayList<MovieDataModel> arrayList){
         if(arrayList !=null){
             for(int i= 0; i<arrayList.size();i++){
+                Log.d(TAG,"insert Movies" +i);
                 MovieDataModel movieDataModel = arrayList.get(i);
                 ContentValues values = new ContentValues();
                 values.put(MovieEntryContract.MovieEntry.TITLE,movieDataModel.getTitle());
@@ -42,22 +41,38 @@ public class MovieDataBaseHelper {
                 values.put(MovieEntryContract.MovieEntry.VOTE_COUNT,movieDataModel.getVoteCount());
                 values.put(MovieEntryContract.MovieEntry.POPULARITY,movieDataModel.getPopularity());
                 values.put(MovieEntryContract.MovieEntry.VOTE_AVERAGE,movieDataModel.getVoteAverage());
-                mMovieSQLiteDatabase.insert(MovieEntryContract.MovieEntry.TABLE_NAME,null,values);
+                String mSelectionClause = MovieEntryContract.MovieEntry.TITLE +" = ?";
+                String[] mSelectionArgs = {movieDataModel.getTitle()};
+                Cursor cursor = mContext.getContentResolver().query(MovieEntryContract.MovieEntry.CONTENT_URI,null,mSelectionClause,mSelectionArgs,null);
+                if(cursor.getCount() ==0) {
+                    Log.d(TAG,"in inserthelperMethod " + movieDataModel.getTitle());
+                    mContext.getContentResolver().insert(MovieEntryContract.MovieEntry.CONTENT_URI,values);
+                }
             }
         }
     }
     
-    public ArrayList<MovieDataModel> getMovieList(){
-        Cursor c = mMovieSQLiteDatabase.query(
-                MovieEntryContract.MovieEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
+    public ArrayList<MovieDataModel> getMovieList(String fav){
+        Cursor c;
+        String mSelectionClause = MovieEntryContract.MovieEntry.FAVORITE+" = ?";
+        String[] mSelectionArgument = {AppConstants.YES};
+        if (AppConstants.YES.equals(fav)){
+            c = mContext.getContentResolver().query(MovieEntryContract.MovieEntry.CONTENT_URI,
+                    null,
+                    mSelectionClause,
+                    mSelectionArgument,
+                    null
+            );
+        } else {
+            c = mContext.getContentResolver().query(MovieEntryContract.MovieEntry.CONTENT_URI,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+        }
         c.moveToFirst();
-        for(int count =1;count<=c.getCount();count++){
+        for(int count =1;count<=c.getCount();count++) {
             MovieDataModel movieData = new MovieDataModel();
             movieData.setTitle(c.getString(c.getColumnIndex(MovieEntryContract.MovieEntry.TITLE)));
             movieData.setVoteCount(c.getInt(c.getColumnIndex(MovieEntryContract.MovieEntry.VOTE_COUNT)));
@@ -77,5 +92,18 @@ public class MovieDataBaseHelper {
         c.close();
         
         return mMovieList;
+    }
+
+    public void update(String movieName,String favValue) {
+        ContentValues values = new ContentValues();
+        String mSelectionClause = MovieEntryContract.MovieEntry.TITLE +" = ?";
+        String[] mSelectionArgs = {movieName};
+        Log.d(TAG,"movieName is "+movieName);
+        values.put(MovieEntryContract.MovieEntry.FAVORITE, favValue);
+        mContext.getContentResolver().update(MovieEntryContract.MovieEntry.CONTENT_URI,
+                values,
+                mSelectionClause,
+                mSelectionArgs);
+
     }
 }

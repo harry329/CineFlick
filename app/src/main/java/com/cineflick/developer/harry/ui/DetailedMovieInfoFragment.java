@@ -1,8 +1,9 @@
 package com.cineflick.developer.harry.ui;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
@@ -12,10 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.cineflick.developer.harry.R;
+import com.cineflick.developer.harry.database.MovieDataBaseHelper;
 import com.cineflick.developer.harry.settings.SettingsActivity;
 import com.cineflick.developer.harry.utils.AppConstants;
 import com.squareup.picasso.Picasso;
@@ -30,6 +32,7 @@ public class DetailedMovieInfoFragment extends Fragment {
     private TextView mRatings;
     private ImageView mMoviePoster;
     private TextView mDescription;
+    private ToggleButton mFavorites;
 
     public DetailedMovieInfoFragment() {
         setHasOptionsMenu(true);
@@ -44,6 +47,7 @@ public class DetailedMovieInfoFragment extends Fragment {
         mRatings = (TextView)view.findViewById(R.id.ratings);
         mDescription = (TextView)view.findViewById(R.id.descriptions);
         mMoviePoster =(ImageView)view.findViewById(R.id.imagePoster);
+        mFavorites = (ToggleButton)view.findViewById(R.id.toggleButton);
         return view;
     }
 
@@ -57,9 +61,20 @@ public class DetailedMovieInfoFragment extends Fragment {
             mRatings.setText(intentBundle.getString(AppConstants.KEY_AVERAGE_RATINGS));
             mDescription.setText(intentBundle.getString(AppConstants.KEY_MOVIE_DESC));
             Picasso.with(getActivity()).load(AppConstants.BASE_URL +AppConstants.IMAGE_SIZE_342 +intentBundle.getString(AppConstants.KEY_MOVIE_POSTER)).into(mMoviePoster);
+            mFavorites.setOnClickListener(new View.OnClickListener() {
+                                              @Override
+                                              public void onClick(View v) {
+                                                  if(mFavorites.isChecked()){
+                                                      new MovieContentAsyncTask().execute(AppConstants.YES,mMovieName.getText().toString());
+                                                  } else {
+                                                      new MovieContentAsyncTask().execute(AppConstants.NO,mMovieName.getText().toString());
+                                                  }
+                                              }
+                                          }
+
+            );
         }
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
@@ -89,6 +104,21 @@ public class DetailedMovieInfoFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private  class MovieContentAsyncTask extends AsyncTask<String,Void,Void>{
+
+        protected Void doInBackground(String...params){
+            MovieDataBaseHelper mMovieDataBaseHelper = new MovieDataBaseHelper(getContext());
+            String favorite = params[0];
+            if(favorite.equals(AppConstants.YES)) {
+                mMovieDataBaseHelper.update(params[1],AppConstants.YES);
+            } else {
+                mMovieDataBaseHelper.update(params[1],AppConstants.NO);
+            }
+            return null;
+        }
     }
 }
 

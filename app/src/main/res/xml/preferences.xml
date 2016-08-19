@@ -6,4 +6,5 @@
         android:title="@string/check_for_ratings"
         android:summary="@string/display_acc_ratings"
         android:defaultValue="false" />
+
 </PreferenceScreen>

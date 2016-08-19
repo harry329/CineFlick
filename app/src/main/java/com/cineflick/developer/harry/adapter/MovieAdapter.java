@@ -61,8 +61,9 @@ public class MovieAdapter extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
         MovieDataModel movieDataModel = (MovieDataModel)mArrayList.get(position);
-        Picasso.with(mContext).load(AppConstants.BASE_URL +AppConstants.IMAGE_SIZE_DEFAUlT +movieDataModel.getPosterPath()).into(viewHolder.mImageView);
-        // viewHolder.mTextView.setText(movieDataModel.getOriginalTitle());
+        Picasso.with(mContext).load(AppConstants.BASE_URL + AppConstants.IMAGE_SIZE_DEFAUlT + movieDataModel.getPosterPath()).into(viewHolder.mImageView);
+
+            // viewHolder.mTextView.setText(movieDataModel.getOriginalTitle());
         return convertView;
     }
 

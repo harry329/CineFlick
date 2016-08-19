@@ -37,6 +37,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity"/>
         </activity>
+        <provider
+            android:authorities="com.cineflick.developer.harry.app"
+            android:name=".database.MovieProvider" />
     </application>
 
 </manifest>

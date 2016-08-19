@@ -10,7 +10,10 @@ public class AppConstants {
     public static final String POPULARITY_DESC="popularity.desc&api_key=";
     public static final String RATING_DESC="vote_average.gte=3.5&api_key=";
     public static final String POPULARITY="Popularity";
+    public static final String FAVORITE ="Favourite";
     public static final String RATING="Rating";
+    public static final String YES = "yes";
+    public static final String NO = "no";
     public static final String PREF_KEY="shareKey";
 
     //Add your key

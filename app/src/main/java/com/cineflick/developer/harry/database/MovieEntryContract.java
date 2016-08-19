@@ -5,14 +5,12 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.cineflick.developer.harry.data.model.MovieDataModel;
-
 /**
  * Created by harry on 4/4/16.
  */
 public class MovieEntryContract {
 
-    public static final String CONTENT_AUTHORITY = "com.cineflick.developer.harry";
+    public static final String CONTENT_AUTHORITY = "com.cineflick.developer.harry.app";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://"+ CONTENT_AUTHORITY);
     public static final String PATH_MOVIE = "movieTable";
 

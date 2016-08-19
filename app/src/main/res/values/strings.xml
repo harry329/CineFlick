@@ -32,4 +32,7 @@
     <string name="settings">Settings</string>
     <string name="pref_sync"  translatable="false">pref_sync</string>
     <string name="share">Share</string>
+    <string name="favorite">Favorite</string>
+    <string name="something">No</string>
+    <string name="yes">Yes</string>
 </resources>
