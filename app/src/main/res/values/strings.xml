@@ -30,9 +30,19 @@
     <string name="check_for_ratings">Check For Ratings</string>
     <string name="display_acc_ratings">Movies will be displayed acc to ratings</string>
     <string name="settings">Settings</string>
-    <string name="pref_sync"  translatable="false">pref_sync</string>
+    <string name="pref_sync" translatable="false">pref_sync</string>
     <string name="share">Share</string>
     <string name="favorite">Favorite</string>
     <string name="something">No</string>
     <string name="yes">Yes</string>
+    <string name="dialog_wifi_message">Don\'t have WiFi Connection!! Using Mobile network may cost you more!</string>
+    <string name="wifi_not_avail">WiFi Not Available</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="wifi_dialog">WiFiDiaglog</string>
+    <string name="trailer">Trailer</string>
+    <string name="reviews">Reviews</string>
+    <string name="review_not_available">"Review is not available "</string>
+    <string name="video_not_available">Video is not available</string>
+
 </resources>

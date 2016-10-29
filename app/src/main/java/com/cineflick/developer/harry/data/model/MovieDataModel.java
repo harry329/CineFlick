@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by harry on 3/2/16.
  */
-public class MovieDataModel implements Parcelable{
+public class MovieDataModel implements Parcelable {
     public String getAdult() {
         return mAdult;
     }
@@ -95,34 +95,68 @@ public class MovieDataModel implements Parcelable{
         mVoteCount = voteCount;
     }
 
-    public MovieDataModel(){
+    public MovieDataModel() {
         super();
     }
 
-        private String mPosterPath;
-        private String mAdult;
-        private String mOverview;
-        private String mReleaseDate;
-        private String mOriginalTitle;
-        private String mOriginalLanguage;
-        private String mTitle;
-        private double mPopularity;
-        private  int mVoteCount;
-        private String mVideo;
-        private double mVoteAverage;
+    private String mPosterPath;
+    private String mAdult;
+    private String mOverview;
+    private String mReleaseDate;
+    private String mOriginalTitle;
+    private String mOriginalLanguage;
+    private String mTitle;
+    private double mPopularity;
+    private int mVoteCount;
+    private String mVideo;
+    private double mVoteAverage;
+    private String mVideoId;
+    private String mReviewURL;
+    private int mMovieId;
 
-    public MovieDataModel(Parcel input){
-        mPosterPath=input.readString();
-        mAdult=input.readString();
-        mVideo=input.readString();
-        mOverview=input.readString();
-        mReleaseDate=input.readString();
-        mOriginalTitle=input.readString();
-        mOriginalLanguage=input.readString();
-        mTitle=input.readString();
-        mPopularity=input.readDouble();
-        mVoteCount=input.readInt();
-        mVoteAverage=input.readDouble();
+
+    public int getMovieId() {
+        return mMovieId;
+    }
+
+    public void setMovieId(int mMovieId) {
+        this.mMovieId = mMovieId;
+    }
+
+    public String getVideoId() {
+        return mVideoId;
+    }
+
+    public void setVideoId(String mVideoId) {
+        this.mVideoId = mVideoId;
+    }
+
+    public String getReviewURL() {
+        return mReviewURL;
+    }
+
+    public void setReviewURL(String mReviewURL) {
+        this.mReviewURL = mReviewURL;
+    }
+
+
+
+    public MovieDataModel(Parcel input) {
+        mPosterPath = input.readString();
+        mAdult = input.readString();
+        mVideo = input.readString();
+        mOverview = input.readString();
+        mReleaseDate = input.readString();
+        mOriginalTitle = input.readString();
+        mOriginalLanguage = input.readString();
+        mTitle = input.readString();
+        mPopularity = input.readDouble();
+        mVoteCount = input.readInt();
+        mVoteAverage = input.readDouble();
+        mVideoId = input.readString();
+        mReviewURL = input.readString();
+        mMovieId = input.readInt();
+
 
     }
 
@@ -130,7 +164,7 @@ public class MovieDataModel implements Parcelable{
         return 0;
     }
 
-    public void writeToParcel(Parcel out,int flags){
+    public void writeToParcel(Parcel out, int flags) {
         out.writeString(mPosterPath);
         out.writeString(mAdult);
         out.writeString(mVideo);
@@ -142,12 +176,15 @@ public class MovieDataModel implements Parcelable{
         out.writeDouble(mPopularity);
         out.writeInt(mVoteCount);
         out.writeDouble(mVoteAverage);
+        out.writeString(mVideoId);
+        out.writeString(mReviewURL);
+        out.writeInt(mMovieId);
     }
 
-        public static final Parcelable.Creator<MovieDataModel> CREATOR
-                = new Parcelable.Creator<MovieDataModel>() {
+    public static final Parcelable.Creator<MovieDataModel> CREATOR
+            = new Parcelable.Creator<MovieDataModel>() {
 
-        public MovieDataModel createFromParcel(Parcel in){
+        public MovieDataModel createFromParcel(Parcel in) {
             return new MovieDataModel(in);
         }
 

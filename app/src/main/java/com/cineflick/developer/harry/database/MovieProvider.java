@@ -17,12 +17,12 @@ public class MovieProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private MovieDataBase mMovieHelper;
 
-    private static UriMatcher buildUriMatcher(){
+    private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = MovieEntryContract.CONTENT_AUTHORITY;
 
-        matcher.addURI(authority,MovieEntryContract.MovieEntry.TABLE_NAME,100);
-        matcher.addURI(authority,MovieEntryContract.MovieEntry.TABLE_NAME +"/#",101);
+        matcher.addURI(authority, MovieEntryContract.MovieEntry.TABLE_NAME, 100);
+        matcher.addURI(authority, MovieEntryContract.MovieEntry.TABLE_NAME + "/#", 101);
         return matcher;
     }
 
@@ -35,10 +35,10 @@ public class MovieProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        Cursor retCursor =null;
-        switch(sUriMatcher.match(uri)) {
+        Cursor retCursor = null;
+        switch (sUriMatcher.match(uri)) {
             case 100:
-                Log.d(LOG_TAG,"in querry method");
+                Log.d(LOG_TAG, "in querry method");
                 retCursor = mMovieHelper.getWritableDatabase().query(
                         MovieEntryContract.MovieEntry.TABLE_NAME,
                         projection,
@@ -49,17 +49,17 @@ public class MovieProvider extends ContentProvider {
                         sortOrder);
                 break;
             default:
-                throw new UnsupportedOperationException("Unknow uri: "+ uri);
+                throw new UnsupportedOperationException("Unknow uri: " + uri);
         }
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
-        
+
     }
 
     @Nullable
     @Override
     public String getType(Uri uri) {
-        switch(sUriMatcher.match(uri)) {
+        switch (sUriMatcher.match(uri)) {
             case 100:
                 return MovieEntryContract.MovieEntry.CONTENT_TYPE;
         }
@@ -71,11 +71,11 @@ public class MovieProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         Uri returnUri = null;
         final SQLiteDatabase db = mMovieHelper.getWritableDatabase();
-        switch(sUriMatcher.match(uri)) {
+        switch (sUriMatcher.match(uri)) {
             case 100:
-                long _id = db.insert(MovieEntryContract.MovieEntry.TABLE_NAME,null,values);
-                Log.d(LOG_TAG,"in insert method and id is " + _id);
-                if ( _id > 0 )
+                long _id = db.insert(MovieEntryContract.MovieEntry.TABLE_NAME, null, values);
+                Log.d(LOG_TAG, "in insert method and id is " + _id);
+                if (_id > 0)
                     returnUri = MovieEntryContract.MovieEntry.buildMovieUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
@@ -83,7 +83,7 @@ public class MovieProvider extends ContentProvider {
             case 101:
 
         }
-        getContext().getContentResolver().notifyChange(uri,null);
+        getContext().getContentResolver().notifyChange(uri, null);
         db.close();
         return returnUri;
     }
@@ -96,13 +96,13 @@ public class MovieProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         int rowsUpdated = 0;
-        Log.d(LOG_TAG,"in update method ");
+        Log.d(LOG_TAG, "in update method ");
         switch (sUriMatcher.match(uri)) {
-            case 100 :
-                rowsUpdated = mMovieHelper.getWritableDatabase().update(MovieEntryContract.MovieEntry.TABLE_NAME,values,selection,selectionArgs);
-                Log.d(LOG_TAG,"in update method " + rowsUpdated);
+            case 100:
+                rowsUpdated = mMovieHelper.getWritableDatabase().update(MovieEntryContract.MovieEntry.TABLE_NAME, values, selection, selectionArgs);
+                Log.d(LOG_TAG, "in update method " + rowsUpdated);
         }
-        getContext().getContentResolver().notifyChange(uri,null);
+        getContext().getContentResolver().notifyChange(uri, null);
         return rowsUpdated;
     }
 }

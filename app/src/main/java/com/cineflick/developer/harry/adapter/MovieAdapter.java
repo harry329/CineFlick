@@ -24,11 +24,12 @@ public class MovieAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList mArrayList;
 
-    public MovieAdapter(Context context,ArrayList arrayList){
+    public MovieAdapter(Context context, ArrayList arrayList) {
         mContext = context;
         mArrayList = arrayList;
 
     }
+
     @Override
     public int getCount() {
         return mArrayList.size();
@@ -48,26 +49,26 @@ public class MovieAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.d(TAG, mContext.getString(R.string.times) + position);
         ViewHolder viewHolder;
-        if(convertView==null){
-            Log.d(TAG,mContext.getString(R.string.convertView_called)+position);
-            LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.movie_adapter,null);
+        if (convertView == null) {
+            Log.d(TAG, mContext.getString(R.string.convertView_called) + position);
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.movie_adapter, null);
             viewHolder = new ViewHolder();
-            viewHolder.mImageView = (ImageView)convertView.findViewById(R.id.movie_adapter_imageView);
-           // viewHolder.mTextView = (TextView)convertView.findViewById(R.id.movie_adapter_textView);
+            viewHolder.mImageView = (ImageView) convertView.findViewById(R.id.movie_adapter_imageView);
+            // viewHolder.mTextView = (TextView)convertView.findViewById(R.id.movie_adapter_textView);
             convertView.setTag(viewHolder);
-        }else {
-            Log.d(TAG,mContext.getString(R.string.convert_View_Called)+position);
-            viewHolder = (ViewHolder)convertView.getTag();
+        } else {
+            Log.d(TAG, mContext.getString(R.string.convert_View_Called) + position);
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-        MovieDataModel movieDataModel = (MovieDataModel)mArrayList.get(position);
-        Picasso.with(mContext).load(AppConstants.BASE_URL + AppConstants.IMAGE_SIZE_DEFAUlT + movieDataModel.getPosterPath()).into(viewHolder.mImageView);
+        MovieDataModel movieDataModel = (MovieDataModel) mArrayList.get(position);
+        Picasso.with(mContext).load(AppConstants.BASE_URL_IMAGE + AppConstants.IMAGE_SIZE_DEFAUlT + movieDataModel.getPosterPath()).into(viewHolder.mImageView);
 
-            // viewHolder.mTextView.setText(movieDataModel.getOriginalTitle());
+        // viewHolder.mTextView.setText(movieDataModel.getOriginalTitle());
         return convertView;
     }
 
-    private static class ViewHolder{
+    private static class ViewHolder {
         ImageView mImageView;
         TextView mTextView;
     }

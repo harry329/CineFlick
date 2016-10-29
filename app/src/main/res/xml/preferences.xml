@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference
+    <ListPreference
         android:key="@string/pref_sync"
         android:title="@string/check_for_ratings"
-        android:summary="@string/display_acc_ratings"
-        android:defaultValue="false" />
-
+        android:dialogTitle="@string/display_acc_ratings"
+        android:entries="@array/ratings_entries"
+        android:entryValues="@array/ratings_entries"
+        android:defaultValue="@string/ratings"
+        />
 </PreferenceScreen>

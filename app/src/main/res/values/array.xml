@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ratings_entries">
+        <item>@string/ratings</item>
+        <item>@string/popularity</item>
+        <item>@string/favorite</item>
+        </string-array>
+</resources>
