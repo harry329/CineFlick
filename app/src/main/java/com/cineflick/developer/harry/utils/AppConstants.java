@@ -12,8 +12,8 @@ public class AppConstants {
     public static final String VIDEO = "videos?";
     public static final String REVIEWS = "reviews?";
     public static final String API_KEY_STRING = "api_key=";
-    public static final String POPULARITY_DESC="popularity.desc&";
-    public static final String RATING_DESC="vote_average.gte=3.5&";
+    public static final String POPULARITY_DESC="popular?";
+    public static final String RATING_DESC="top_rated?";
     public static final String POPULARITY="Popularity";
     public static final String FAVORITE ="Favourite";
     public static final String RATING="Rating";

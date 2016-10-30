@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/touch_selector"
-    android:padding="@dimen/linear_layout_padding_margin">
-
+    android:background="@drawable/touch_selector">
 
     <ImageView
         android:id="@+id/movie_adapter_imageView"
@@ -13,12 +11,4 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:src="@mipmap/ic_launcher" />
-    <!--
-        //TextView to show titles of movies
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/movie_adapter_textView"
-            android:layout_gravity="center_horizontal"/>-->
-</LinearLayout>
+</FrameLayout>

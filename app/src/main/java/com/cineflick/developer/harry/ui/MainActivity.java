@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity
         mContext = this;
         mNetworkUtils = new NetworkUtils();
         if (mNetworkUtils.isNetworkAvailable(mContext) && !mNetworkUtils.isWiFi()) {
-            //TODO show Dialog
             WiFiConnectionAlertDialog wiFiConnectionAlertDialog = WiFiConnectionAlertDialog.newInstance();
             wiFiConnectionAlertDialog.show(getFragmentManager(), getString(R.string.wifi_dialog));
         } else {

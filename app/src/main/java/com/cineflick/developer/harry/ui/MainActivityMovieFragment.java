@@ -178,7 +178,7 @@ public class MainActivityMovieFragment extends Fragment {
                 mArrayList = mMovieDataBaseHelper.getMovieList(AppConstants.YES);
                 return null;
             }
-            String urlWithAppKey = AppConstants.BASE_URL +AppConstants.URL_DISCOVER + selectionParam + AppConstants.API_KEY;
+            String urlWithAppKey = AppConstants.BASE_URL + AppConstants.MOVIE + selectionParam + AppConstants.API_KEY;
             String movieJsonStr = null;
             JSONParser jsonParser = null;
             try {
