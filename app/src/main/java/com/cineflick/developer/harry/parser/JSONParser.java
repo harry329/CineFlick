@@ -51,16 +51,15 @@ public class JSONParser {
 
     public String parseJSONVideo() throws JSONException{
         mJSONObject = new JSONObject(mJSONString);
-        String videoId = mJSONObject.getString("id");
-//        JSONArray jsonArray = mJSONObject.getJSONArray("results");
+        JSONArray jsonArray = mJSONObject.getJSONArray("results");
 
-/*        String videoId = null;
+        String videoId = null;
         if(jsonArray != null && jsonArray.length()>0) {
             JSONObject jsonObject = jsonArray.getJSONObject(0);
             if(jsonObject != null) {
-                videoId = jsonObject.getString("id");
+                videoId = jsonObject.getString("key");
             }
-        }*/
+        }
         return videoId;
     }
 
